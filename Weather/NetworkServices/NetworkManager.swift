@@ -4,33 +4,30 @@ class NetworkManager {
     
     static let shared : NetworkManager = NetworkManager()
     
-    func getWeather(city: String, cnt: String, result: @escaping ((Params) -> Void)) {
+    func getWeather(city: String, result: @escaping (_ params: Params) -> ()) {
         
         var urlComponents = URLComponents()
-        urlComponents.scheme = "https"
-        urlComponents.host = "api.openweathermap.org"
-        urlComponents.path = "/data/2.5/forecast/daily"
+        urlComponents.scheme = Constants.scheme.rawValue
+        urlComponents.host = Constants.host.rawValue
+        urlComponents.path = Constants.path.rawValue
         
         let queryItemQuery = URLQueryItem(name: "q", value: city)
-        let queryItemCnt = URLQueryItem(name: "cnt", value: cnt)
         let queryItemToken = URLQueryItem(name: "appid",
-                                          value: "bd9e45736ac5513dc9cba3f68aa81d3d")
+                                          value: Constants.appid.rawValue)
         
-        urlComponents.queryItems = [queryItemQuery, queryItemCnt, queryItemToken]
+        urlComponents.queryItems = [queryItemQuery, queryItemToken]
         
         guard let url = urlComponents.url else { return }
-        let urlRequest = URLRequest(url: url)
         
-        URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+        URLSession.shared.dataTask(with: url) { data, _, error in
             
             guard error == nil else {
                 print(NetworkError.missingURL)
                 return
             }
             
-            var decoderParams: Params?
             guard let data = data else { return }
-            decoderParams = try? JSONDecoder().decode(Params.self, from: data)
+            let decoderParams = try? JSONDecoder().decode(Params.self, from: data)
             if let decoderParams = decoderParams {
                 result(decoderParams)
             } else {
