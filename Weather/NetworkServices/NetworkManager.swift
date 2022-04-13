@@ -14,8 +14,9 @@ class NetworkManager {
         let queryItemQuery = URLQueryItem(name: "q", value: city)
         let queryItemToken = URLQueryItem(name: "appid",
                                           value: Constants.appid.rawValue)
+        let queryItemUnits = URLQueryItem(name: "units", value: Constants.units.rawValue)
         
-        urlComponents.queryItems = [queryItemQuery, queryItemToken]
+        urlComponents.queryItems = [queryItemQuery, queryItemToken, queryItemUnits]
         
         guard let url = urlComponents.url else { return }
         

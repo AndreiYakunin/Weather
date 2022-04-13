@@ -4,7 +4,6 @@ class ForecastViewController: UICollectionViewController {
     
     var forecastModel : Params!
     var cityName: String?
-    var list: List?
     
     let itemsPerRow: CGFloat = 1
     let sectionInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
@@ -36,17 +35,17 @@ class ForecastViewController: UICollectionViewController {
             let tempDay = forecast?.list?[indexPath.row].temp?.day,
             let tempMin = forecast?.list?[indexPath.row].temp?.min,
             let tempMax = forecast?.list?[indexPath.row].temp?.max,
-            let dt = forecast?.list?[indexPath.row].dt
-//            let description = forecast?.list?[indexPath.row].weather?.description
+            let dt = forecast?.list?[indexPath.row].dt,
+            let description = forecast?.list?[indexPath.row].weather?.first?.description,
+            let icon = forecast?.list?[indexPath.row].weather?.first//.id
         else { return }
         
         cell.dayTempLabel.text = "\(String(describing: tempDay))"
         cell.minTempLabel.text = "min: \(String(describing: tempMin))"
         cell.maxTempLabel.text = "max: \(String(describing: tempMax))"
-//        cell.dtLabel.text = "\(String(describing: dt))"
         cell.dtLabel.text = DailyCell().convertWeek(with: dt)
-//        cell.descriptionLabel.text = description
-        
+        cell.descriptionLabel.text = description
+        cell.iconView.image = DailyCell().createImage(with: icon)
     }
     
     // MARK: - UICollectionViewDataSource

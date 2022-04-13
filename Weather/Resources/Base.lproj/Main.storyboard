@@ -33,7 +33,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Weather" id="yDl-QY-TFL">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="MOg-1s-uQi">
-                            <color key="tintColor" systemColor="linkColor"/>
+                            <color key="tintColor" red="0.65490196078431373" green="0.92156862745098034" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="addAction:" destination="q08-b7-z2X" id="B9C-Wa-fDn"/>
                             </connections>
@@ -70,8 +70,8 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HYK-mG-c6V">
-                                            <rect key="frame" x="129" y="139.5" width="42" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <rect key="frame" x="120.5" y="250" width="59" height="30"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -99,15 +99,24 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6x5-L3-kGD">
+                                            <rect key="frame" x="75" y="75" width="150" height="150"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="150" id="ICo-3m-wmD"/>
+                                                <constraint firstAttribute="height" constant="150" id="IqB-7Z-Xle"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="xeo-bk-Xdb" secondAttribute="trailing" constant="8" id="4M5-9G-BP2"/>
                                         <constraint firstItem="uYw-pl-0zx" firstAttribute="leading" secondItem="KfA-Jx-9Rd" secondAttribute="leading" constant="8" id="G9S-fV-1ri"/>
                                         <constraint firstItem="HYK-mG-c6V" firstAttribute="centerX" secondItem="KfA-Jx-9Rd" secondAttribute="centerX" id="L6w-4d-AiC"/>
                                         <constraint firstItem="9v1-ui-OfI" firstAttribute="leading" secondItem="KfA-Jx-9Rd" secondAttribute="leading" constant="8" id="NKK-PK-vM3"/>
-                                        <constraint firstItem="HYK-mG-c6V" firstAttribute="centerY" secondItem="KfA-Jx-9Rd" secondAttribute="centerY" id="XX8-bO-nnB"/>
+                                        <constraint firstItem="6x5-L3-kGD" firstAttribute="centerY" secondItem="KfA-Jx-9Rd" secondAttribute="centerY" id="Pda-7o-Fv0"/>
+                                        <constraint firstItem="HYK-mG-c6V" firstAttribute="top" secondItem="6x5-L3-kGD" secondAttribute="bottom" constant="25" id="UEb-dp-GnN"/>
                                         <constraint firstAttribute="bottom" secondItem="9v1-ui-OfI" secondAttribute="bottom" constant="8" id="hrd-j6-BoE"/>
                                         <constraint firstItem="xeo-bk-Xdb" firstAttribute="top" secondItem="KfA-Jx-9Rd" secondAttribute="top" constant="8" id="jNi-aB-siM"/>
+                                        <constraint firstItem="6x5-L3-kGD" firstAttribute="centerX" secondItem="KfA-Jx-9Rd" secondAttribute="centerX" id="jeJ-Fw-xUm"/>
                                         <constraint firstItem="uYw-pl-0zx" firstAttribute="top" secondItem="KfA-Jx-9Rd" secondAttribute="top" constant="8" id="jlS-EX-cXi"/>
                                         <constraint firstAttribute="bottom" secondItem="O4R-dE-xbf" secondAttribute="bottom" constant="8" id="ma4-As-tgc"/>
                                         <constraint firstAttribute="trailing" secondItem="O4R-dE-xbf" secondAttribute="trailing" constant="8" id="oso-4y-xZV"/>
@@ -118,6 +127,7 @@
                                     <outlet property="dayTempLabel" destination="HYK-mG-c6V" id="s1c-Cy-s9A"/>
                                     <outlet property="descriptionLabel" destination="uYw-pl-0zx" id="eLT-l6-WRg"/>
                                     <outlet property="dtLabel" destination="xeo-bk-Xdb" id="beT-Zu-vnP"/>
+                                    <outlet property="iconView" destination="6x5-L3-kGD" id="Gso-IR-hwq"/>
                                     <outlet property="maxTempLabel" destination="O4R-dE-xbf" id="ONh-16-Uz2"/>
                                     <outlet property="minTempLabel" destination="9v1-ui-OfI" id="57o-hU-Wp9"/>
                                 </connections>
@@ -155,9 +165,6 @@
         </scene>
     </scenes>
     <resources>
-        <systemColor name="linkColor">
-            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
