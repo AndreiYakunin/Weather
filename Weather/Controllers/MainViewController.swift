@@ -1,13 +1,22 @@
 import UIKit
+import CoreData
 
 class MainViewController: UITableViewController {
 
-    var cities = [String]()
+    var cities: [NSManagedObject] = []
     var cityName: String?
+    lazy var coreDataStack = CoreDataStack(modelName: "City")
+    let entityName = "CityCoreData"
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        fetchData()
     }
     
     // MARK: - IBAction
@@ -16,12 +25,13 @@ class MainViewController: UITableViewController {
         
         let alertController = UIAlertController(title: "Enter city", message: "", preferredStyle: .alert)
         
-        let alertOkAction = UIAlertAction(title: "Ok", style: .default) { action in
-            let textField = alertController.textFields?.first
-            guard let text = textField?.text,
-                      text != ""
-                  else { return }
-            self.cities.append(text)
+        let alertOkAction = UIAlertAction(title: "Ok", style: .default) { [unowned self] action in
+            
+            guard let textField = alertController.textFields?.first,
+                  let nameToSave = textField.text,
+                  nameToSave != ""
+            else { return }
+            self.saveName(name: nameToSave)
             self.tableView.reloadData()
         }
         let alertCancelAction = UIAlertAction(title: "Cancel", style: .default, handler: nil)
@@ -33,6 +43,29 @@ class MainViewController: UITableViewController {
         }
         
         present(alertController, animated: true, completion: nil)
+    }
+    
+    // MARK: - CoreData
+    
+    func saveName(name: String) {
+        let managedContext = coreDataStack.managedContext
+        let entity = NSEntityDescription.entity(forEntityName: entityName, in: managedContext)!
+        let cityName = NSManagedObject(entity: entity, insertInto: managedContext)
+        cityName.setValue(name, forKey: "name")
+        
+        coreDataStack.saveContext()
+        cities.append(cityName)
+    }
+    
+    func fetchData() {
+        let managedContext = coreDataStack.managedContext
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
+        
+        do {
+            cities = try managedContext.fetch(fetchRequest)
+        } catch let error as NSError {
+            print("Fetching error: \(error), \(error.userInfo)")
+        }
     }
     
     // MARK: - Navigation
@@ -49,8 +82,9 @@ class MainViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let city = cities[indexPath.row]
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = cities[indexPath.row]
+        cell.textLabel?.text = city.value(forKeyPath: "name") as? String
 
         return cell
     }
@@ -60,12 +94,20 @@ class MainViewController: UITableViewController {
         return .delete
     }
     
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        true
+    }
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
         if editingStyle == .delete {
             tableView.beginUpdates()
-            cities.remove(at: indexPath.row)
+            let cityToRemove = cities.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
             tableView.endUpdates()
+            
+            coreDataStack.managedContext.delete(cityToRemove)
+            coreDataStack.saveContext()
         }
     }
 
@@ -77,7 +119,7 @@ class MainViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let city = cities[indexPath.row]
-        cityName = city
+        cityName = city.value(forKeyPath: "name") as? String
         performSegue(withIdentifier: "forecastSegue", sender: self)
     }
 }
